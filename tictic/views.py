@@ -17,3 +17,17 @@ class StartGameView(View):
         board = tic.show()
         cache.set(gid, board, timeout=None)
         return JsonResponse({'gid': gid, 'board': board})
+
+
+class GameMoveView(View):
+    def post(self, request, *args, **kwargs):
+        gid = request.POST.get('gid', '')
+        res = {'gid': gid}
+
+        board = cache.get(gid)
+        if not board:
+            res['error'] = 'No existing game matches this gid!'
+            return JsonResponse(res)
+        res['board'] = board
+
+        return JsonResponse(res)
