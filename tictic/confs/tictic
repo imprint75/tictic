@@ -1,0 +1,14 @@
+server {
+    listen          80;
+    server_name     tictic.com www.tictic.com;
+
+    location / {
+        include         uwsgi_params;
+        uwsgi_pass      unix:///run/uwsgi/app/tictic/socket;
+    }
+
+    location /static {
+        root   /srv/tictic/;
+        index  index.html index.htm;
+    }
+}
