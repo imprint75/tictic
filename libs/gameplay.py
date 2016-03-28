@@ -31,20 +31,19 @@ def make_move(gid, move):
         return res
     res['board'] = board
 
-    try:
-        tic = Tic(flatten_board(board))
-    except Exception as e:
-        logger.exception(e)
+    # initialize the cached board
+    tic = Tic(flatten_board(board))
 
+    # if there's already a winner, just return
     if tic.complete():
         res['winner'] = WINNER_MSG.format(tic.winner())
         return res
 
-    if move in tic.available_moves():
-        tic.make_move(move, player)
-    else:
+    if move not in tic.available_moves():
         res['error'] = MOVE_UNAVAILABLE_ERROR
         return res
+
+    tic.make_move(move, player)
 
     return res
 
