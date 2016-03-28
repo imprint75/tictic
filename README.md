@@ -49,4 +49,4 @@ The response might look like this
 
 `{"gid": "7896ca16-7252-4280-9117-76569a760c49", "board": [[null, null, null], [null, "X", null], [null, null, "O"]]}`
 
-Assuming you didn't encounter an error or a winning move, the program just responds with the `gid` and the full `board`.  You can see from this response that the program selected space 8, so you can't select 8 on your next move.  You may encounter `error` and `winner` messages as encountered.
+Assuming you didn't encounter an error or a winning move, the program just responds with the `gid` and the full `board`.  You can see from this response that the program selected space 8, so you can't select 8 on your next move.  You may also receive `error` and `winner` messages.
