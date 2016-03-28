@@ -20,8 +20,7 @@ def make_move(gid, move):
 
     board = cache.get(gid)
     if not board:
-        # treat lack of board as a bad gid
-        res['error'] = GID_ERROR
+        res['error'] = GID_ERROR  # treat lack of board as a bad gid
         return res
     res['board'] = board
 
@@ -34,8 +33,7 @@ def make_move(gid, move):
         res['error'] = MOVE_INPUT_ERROR
         return res
 
-    # initialize the cached board
-    game = Tic(flatten_board(board))
+    game = Tic(flatten_board(board))  # initialize the cached board
     if hasattr(game, '__iter__') and 'error' in game:
         res['error'] = BOARD_ERROR
         return res
@@ -96,6 +94,10 @@ def flatten_board(board):
 
 
 def determine(board, player):
+    """
+    determine the next move
+    """
+
     a = -2
     choices = []
     if len(board.available_moves()) == 9:
