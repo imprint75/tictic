@@ -57,3 +57,9 @@ class TestGamePlay(TestCase):
         goodmove = make_move(self.gid, 0)
         self.assertEqual(type(goodmove), dict)
         self.assertIn(MOVE_UNAVAILABLE_ERROR, goodmove.values())
+
+    def test_determine(self):
+        complete_board = [['O', 'X', 'X'], ['X', 'X', 'O'], ['O', 'O', 'X']]
+        game = Tic(flatten_board(complete_board))
+        next_move = determine(game, 'X')
+        self.assertEqual(next_move, None)

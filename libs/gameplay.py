@@ -110,4 +110,5 @@ def determine(board, player):
             choices = [move]
         elif val == a:
             choices.append(move)
-    return random.choice(choices)
+    if choices:
+        return random.choice(choices)
