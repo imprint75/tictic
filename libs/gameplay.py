@@ -14,7 +14,7 @@ WINNER_MSG = 'winner is {}'
 
 
 def make_move(gid, move):
-    player = 'X'
+    player1 = 'X'
     res = {'gid': gid}
 
     try:
@@ -43,7 +43,20 @@ def make_move(gid, move):
         res['error'] = MOVE_UNAVAILABLE_ERROR
         return res
 
-    tic.make_move(move, player)
+    tic.make_move(move, player1)
+
+    player2 = get_enemy(player1)
+    computer_move = determine(tic, player2)
+    tic.make_move(computer_move, player2)
+
+    board = tic.show()
+    res['board'] = board
+
+    # cache the new board state
+    cache.set(gid, board, timeout=None)
+
+    if tic.complete():
+        res['winner'] = WINNER_MSG.format(tic.winner())
 
     return res
 
