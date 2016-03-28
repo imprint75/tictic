@@ -9,6 +9,7 @@ from libs.exceptions import MoveOutOfRangeError
 logger = logging.getLogger(__name__)
 GID_ERROR = 'No existing game with this gid'
 MOVE_INPUT_ERROR = 'Move must be a number between 0-8'
+WINNER_MSG = 'winner is {}'
 
 
 def make_move(gid, move):
@@ -27,6 +28,15 @@ def make_move(gid, move):
         res['error'] = GID_ERROR
         return res
     res['board'] = board
+
+    try:
+        tic = Tic(flatten_board(board))
+    except Exception as e:
+        logger.exception(e)
+
+    if tic.complete():
+        res['winner'] = WINNER_MSG.format(tic.winner())
+        return res
 
     return res
 
