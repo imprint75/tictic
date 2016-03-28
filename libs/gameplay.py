@@ -18,6 +18,13 @@ def make_move(gid, move):
     player1 = 'X'
     res = {'gid': gid}
 
+    board = cache.get(gid)
+    if not board:
+        # treat lack of board as a bad gid
+        res['error'] = GID_ERROR
+        return res
+    res['board'] = board
+
     # move needs to be an integer between 0-8
     try:
         move = int(move)
@@ -26,13 +33,6 @@ def make_move(gid, move):
     except (ValueError, MoveOutOfRangeError):
         res['error'] = MOVE_INPUT_ERROR
         return res
-
-    board = cache.get(gid)
-    if not board:
-        # treat lack of board as a bad gid
-        res['error'] = GID_ERROR
-        return res
-    res['board'] = board
 
     # initialize the cached board
     game = Tic(flatten_board(board))
