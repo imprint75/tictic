@@ -36,7 +36,7 @@ def make_move(gid, move):
 
     # initialize the cached board
     game = Tic(flatten_board(board))
-    if 'error' in game:
+    if hasattr(game, '__iter__') and 'error' in game:
         res['error'] = BOARD_ERROR
         return res
 
