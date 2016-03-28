@@ -6,8 +6,10 @@ from django.views.generic import View
 from django.core.cache import cache
 
 from libs.tictactoe import Tic
+from libs.gameplay import make_move
 
 logger = logging.getLogger(__name__)
+PARAM_EMPTY = 'Submit a gid and a move # if you want to make a move'
 
 
 class StartGameView(View):
@@ -21,13 +23,10 @@ class StartGameView(View):
 
 class GameMoveView(View):
     def post(self, request, *args, **kwargs):
-        gid = request.POST.get('gid', '')
-        res = {'gid': gid}
+        gid = request.POST.get('gid')
+        move = request.POST.get('move')
 
-        board = cache.get(gid)
-        if not board:
-            res['error'] = 'No existing game matches this gid!'
-            return JsonResponse(res)
-        res['board'] = board
+        if not all([gid, move]):
+            return JsonResponse({'error': PARAM_EMPTY})
 
-        return JsonResponse(res)
+        return JsonResponse(make_move(gid, move))
