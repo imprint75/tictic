@@ -63,3 +63,21 @@ class TestGamePlay(TestCase):
         game = Tic(flatten_board(complete_board))
         next_move = determine(game, 'X')
         self.assertEqual(next_move, None)
+
+    def test_winning(self):
+        player = 'X'
+        goodmove = {}
+        while 'winner' not in goodmove.keys():
+            game = Tic(flatten_board(self.board))
+            next_move = determine(game, get_enemy(player))
+            if next_move is not None:
+                print('next_move is {}'.format(next_move))
+                goodmove = make_move(self.gid, next_move)
+                self.board = goodmove['board']
+
+                for l in goodmove['board']:
+                    print(' | '.join([str(x) for x in l]))
+            print('\n')
+        game = Tic(flatten_board(self.board))
+        self.assertEqual(game.complete(), True)
+        self.assertIn(game.winner(), ['X', 'O', None])
