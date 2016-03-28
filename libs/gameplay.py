@@ -17,6 +17,7 @@ def make_move(gid, move):
     player1 = 'X'
     res = {'gid': gid}
 
+    # move needs to be an integer between 0-8
     try:
         move = int(move)
         if move > 8:
@@ -27,30 +28,32 @@ def make_move(gid, move):
 
     board = cache.get(gid)
     if not board:
+        # treat lack of board as a bad gid
         res['error'] = GID_ERROR
         return res
     res['board'] = board
 
     # initialize the cached board
-    tic = Tic(flatten_board(board))
+    game = Tic(flatten_board(board))
 
     # if there's already a winner, just return
-    if tic.complete():
-        res['winner'] = WINNER_MSG.format(tic.winner())
+    if game.complete():
+        res['winner'] = WINNER_MSG.format(game.winner())
         return res
 
-    if move not in tic.available_moves():
+    if move not in game.available_moves():
         res['error'] = MOVE_UNAVAILABLE_ERROR
         return res
 
-    tic.make_move(move, player1)
-    res.update(post_move(tic, gid))
+    game.make_move(move, player1)
+    res.update(post_move(game, gid))
     if 'winner' in res.keys():
         return res
+
     player2 = get_enemy(player1)
-    computer_move = determine(tic, player2)
-    tic.make_move(computer_move, player2)
-    res.update(post_move(tic, gid))
+    computer_move = determine(game, player2)
+    game.make_move(computer_move, player2)
+    res.update(post_move(game, gid))
 
     return res
 
