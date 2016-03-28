@@ -28,3 +28,11 @@ class TestGamePlay(TestCase):
         self.assertEqual(flatten_board([[1], [2, 3], [4]]), [1, 2, 3, 4])
         self.assertNotEqual(flatten_board([1, 2, [3, 4]]), [1, 2, 3, 4])
         self.assertIn('error', flatten_board([1, 2, [3, 4]]))
+
+    def test_make_move_input(self):
+        badmove = make_move(self.gid, 20)
+        self.assertEqual(type(badmove), dict)
+        self.assertIn('error', badmove.keys())
+        goodmove = make_move(self.gid, 0)
+        self.assertEqual(type(goodmove), dict)
+        self.assertIn('error', badmove.keys())
