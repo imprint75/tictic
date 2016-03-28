@@ -41,7 +41,7 @@ spaces on the board as
 | **3** | **4** | **5** |
 | **6** | **7** | **8** |
 
-The url to make a move requires you to make a POST request to `192.168.33.103/move` and include the parameters `gid` and `move`.  If you wanted to grab the middle square on the board, for example, you could run this command
+Making a move requires you to make a POST request to `192.168.33.103/move` and include the parameters `gid` and `move`.  If you wanted to grab the middle square on the board, for example, you could run this command
 
 `curl --data "gid=7896ca16-7252-4280-9117-76569a760c49&move=4" 192.168.33.103/move`
 
