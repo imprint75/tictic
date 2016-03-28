@@ -8,6 +8,7 @@ from libs.exceptions import MoveOutOfRangeError
 
 logger = logging.getLogger(__name__)
 GID_ERROR = 'No existing game with this gid'
+BOARD_ERROR = 'There was a problem with this gid. Please start a new game.'
 MOVE_INPUT_ERROR = 'Move must be a number between 0-8'
 MOVE_UNAVAILABLE_ERROR = 'Select an available move'
 WINNER_MSG = 'winner is {}'
@@ -35,6 +36,9 @@ def make_move(gid, move):
 
     # initialize the cached board
     game = Tic(flatten_board(board))
+    if 'error' in game:
+        res['error'] = BOARD_ERROR
+        return res
 
     # if there's already a winner, just return
     if game.complete():
@@ -86,8 +90,8 @@ def flatten_board(board):
         for l in board:
             for space in l:
                 flat.append(space)
-    except Exception as e:
-        logger.exception(e)
+    except TypeError:
+        flat.append('error')
     return flat
 
 
