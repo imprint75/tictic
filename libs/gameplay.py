@@ -44,24 +44,40 @@ def make_move(gid, move):
         return res
 
     tic.make_move(move, player1)
-
+    res.update(post_move(tic, gid))
+    if 'winner' in res.keys():
+        return res
     player2 = get_enemy(player1)
     computer_move = determine(tic, player2)
     tic.make_move(computer_move, player2)
-
-    board = tic.show()
-    res['board'] = board
-
-    # cache the new board state
-    cache.set(gid, board, timeout=None)
-
-    if tic.complete():
-        res['winner'] = WINNER_MSG.format(tic.winner())
+    res.update(post_move(tic, gid))
 
     return res
 
 
+def post_move(game, gid):
+    """
+    after making a move, we should:
+    get updated board state, cache it and check for winner
+
+    """
+
+    res = {}
+    board = game.show()
+    res['board'] = board
+    # cache the new board state
+    cache.set(gid, board, timeout=None)
+    if game.complete():
+        res['winner'] = WINNER_MSG.format(game.winner())
+    return res
+
+
 def flatten_board(board):
+    """
+    game logic requires a flat list
+
+    """
+
     flat = []
     try:
         for l in board:
