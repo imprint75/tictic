@@ -4,8 +4,8 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from libs.tictactoe import Tic, get_enemy
-from libs.gameplay import (make_move, post_move, flatten_board, determine,
-                           GID_ERROR, BOARD_ERROR, MOVE_INPUT_ERROR,
+from libs.gameplay import (make_move, flatten_board, determine,
+                           GID_ERROR, MOVE_INPUT_ERROR,
                            MOVE_UNAVAILABLE_ERROR, WINNER_MSG)
 
 
@@ -46,7 +46,7 @@ class TestGamePlay(TestCase):
         self.assertIn('error', badmove.keys())
         self.assertIn(MOVE_INPUT_ERROR, badmove.values())
 
-        # good move
+        # should be a good move
         goodmove = make_move(self.gid, 0)
         self.assertEqual(type(goodmove), dict)
         self.assertNotIn('error', goodmove.keys())
@@ -54,9 +54,9 @@ class TestGamePlay(TestCase):
         self.board = goodmove['board']
 
         # repeat the same move a second time
-        goodmove = make_move(self.gid, 0)
-        self.assertEqual(type(goodmove), dict)
-        self.assertIn(MOVE_UNAVAILABLE_ERROR, goodmove.values())
+        badmove = make_move(self.gid, 0)
+        self.assertEqual(type(badmove), dict)
+        self.assertIn(MOVE_UNAVAILABLE_ERROR, badmove.values())
 
     def test_determine(self):
         complete_board = [['O', 'X', 'X'], ['X', 'X', 'O'], ['O', 'O', 'X']]
@@ -75,9 +75,10 @@ class TestGamePlay(TestCase):
                 goodmove = make_move(self.gid, next_move)
                 self.board = goodmove['board']
 
-                for l in goodmove['board']:
-                    print(' | '.join([str(x) for x in l]))
-            print('\n')
+        self.assertIn('winner', goodmove)
         game = Tic(flatten_board(self.board))
         self.assertEqual(game.complete(), True)
         self.assertIn(game.winner(), ['X', 'O', None])
+        self.assertEqual(game.complete(), True)
+        message = WINNER_MSG.format(game.winner())
+        self.assertEqual(goodmove['winner'], message)
