@@ -1,6 +1,10 @@
-from fabric.api import env, run
+from contextlib import contextmanager as _contextmanager
+from fabric.api import env, run, prefix
 from fabric.context_managers import cd
 from fabric.operations import sudo
+
+env.directory = '/srv/tictic/'
+env.activate = 'source /srv/tictic_env/bin/activate'
 
 
 def vagrant():
@@ -12,6 +16,18 @@ def vagrant():
 def testing():
     with cd('/srv/'):
         run('ls')
+
+
+@_contextmanager
+def virtualenv():
+    with cd(env.directory):
+        with prefix(env.activate):
+            yield
+
+
+def run_tests():
+    with virtualenv():
+        run('./manage.py test')
 
 
 def build():
