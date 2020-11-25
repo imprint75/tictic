@@ -5,7 +5,7 @@ Python 3, Django, uWsgi, Nginx and Redis
 Installation (OSX and Linux)
 ======
 If you have [Git](https://git-scm.com/downloads), [VirtualBox](https://www.virtualbox.org/), [Vagrant](https://www.vagrantup.com/) and [Fabric](https://www.fabfile.org/) 
-installed locally and you'd like to create a virtual machine to run tictic on, you following these steps:
+installed locally and you'd like to create a virtual machine to run tictic on, follow these steps:
 
 1. Clone this repo to the directory of your choosing `git clone git@github.com:imprint75/tictic.git` 
 
